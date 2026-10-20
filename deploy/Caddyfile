@@ -1,0 +1,14 @@
+# 把 sound.example.com 换成自己的域名，并把 DNS 指向服务器。
+# Caddy 会自动申请 / 续期 HTTPS 证书，并自动转发 WebSocket。
+sound.example.com {
+	encode zstd gzip
+
+	reverse_proxy 127.0.0.1:8787 {
+		header_up X-Forwarded-For {remote_host}
+	}
+
+	header {
+		-Server
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+	}
+}

@@ -1,0 +1,26 @@
+# Fly.io 配置。先执行：
+#   fly launch --no-deploy --copy-config
+# 然后把 app 改成全局唯一的名字，再执行 fly deploy。
+# min_machines_running = 1 才会真正 7×24 常驻（会产生费用）。
+app = "soundbridge-change-me"
+primary_region = "sin"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "8787"
+  HOST = "0.0.0.0"
+  HTTPS = "0"
+
+[http_service]
+  internal_port = 8787
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+
+[[vm]]
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ink">#070A10</color>
+    <color name="panel">#121A28</color>
+    <color name="coral">#FF7A59</color>
+    <color name="teal">#6FE3D0</color>
+    <color name="paper">#F3F1EA</color>
+    <color name="muted">#98A1B2</color>
+</resources>

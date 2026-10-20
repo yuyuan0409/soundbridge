@@ -1,0 +1,20 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# 复制到 ~/.termux/boot/soundbridge.sh 并 chmod +x
+# 需要 Termux:Boot，且 Termux 已关闭电池优化。
+
+termux-wake-lock
+
+cd "$HOME/soundbridge" || exit 1
+
+export HTTPS=0
+export PORT=8787
+export HOST=127.0.0.1
+# Named Tunnel 的固定域名；Quick Tunnel 请先不要设置，或部署后再改。
+export PUBLIC_URL="https://sound.example.com"
+
+nohup node server/index.js >> "$HOME/soundbridge.log" 2>&1 &
+sleep 5
+
+# Named Tunnel。若使用 Quick Tunnel，把下面一行改为：
+# nohup "$HOME/cloudflared" tunnel --url http://127.0.0.1:8787 --no-autoupdate >> "$HOME/cloudflared.log" 2>&1 &
+nohup "$HOME/cloudflared" tunnel run soundbridge >> "$HOME/cloudflared.log" 2>&1 &

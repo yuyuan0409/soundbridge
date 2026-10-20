@@ -1,0 +1,20 @@
+# Render Blueprint — 一键创建长期 Web 服务
+# 注意：free 计划空闲后会休眠，WebSocket 会断开；要真正 7×24 请改成 starter。
+services:
+  - type: web
+    name: soundbridge
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      # 平台已经终止 TLS，容器内只跑 HTTP
+      - key: HTTPS
+        value: "0"
+      # PUBLIC_URL 可不填；网页会使用当前 origin。
+      # 需要固定邀请域名时，再到 Render 环境变量里添加 PUBLIC_URL。

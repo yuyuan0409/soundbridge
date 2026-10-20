@@ -1,0 +1,14 @@
+# coturn 配置示例。复制到 /etc/turnserver.conf 后按需修改。
+listening-port=3478
+tls-listening-port=5349
+fingerprint
+lt-cred-mech
+use-auth-secret
+static-auth-secret=CHANGE_ME_TO_A_LONG_RANDOM_SECRET
+realm=sound.example.com
+external-ip=YOUR_PUBLIC_IP
+min-port=49160
+max-port=49200
+no-multicast-peers
+# 建议关闭不加密的 TURN 明文端口，仅保留 TLS 时：
+# no-tcp-relay

@@ -1,0 +1,13 @@
+node_modules/
+certs/
+.env
+.dev.vars
+.wrangler/
+worker/.wrangler/
+*.log
+test/artifacts/e2e-failure-*.png
+.DS_Store
+mobile/.gradle/
+mobile/build/
+mobile/app/build/
+mobile/local.properties

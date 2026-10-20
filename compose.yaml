@@ -1,0 +1,20 @@
+services:
+  soundbridge:
+    build: .
+    container_name: soundbridge
+    restart: unless-stopped
+    ports:
+      - "8787:8787"
+      - "8443:8443"
+    environment:
+      PORT: "8787"
+      HTTPS_PORT: "8443"
+      HOST: "0.0.0.0"
+      # 由 Caddy / 平台终止 TLS 时保持 0
+      HTTPS: "${HTTPS:-0}"
+      PUBLIC_URL: "${PUBLIC_URL:-}"
+      # STUN_URLS: "stun:stun.l.google.com:19302"
+      # TURN_URLS: "turn:turn.example.com:3478?transport=udp,turn:turn.example.com:3478?transport=tcp"
+      # TURN_SECRET: "change-me"
+    # volumes:
+    #   - ./certs:/app/certs:ro

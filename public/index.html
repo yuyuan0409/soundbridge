@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#080b12" />
+    <meta name="color-scheme" content="dark" />
+    <meta
+      name="description"
+      content="声桥 SoundBridge：创建一条只属于你们的声音通道，双向实时共享设备上正在播放的声音。P2P 优先，连不上自动服务器中继，无需注册。"
+    />
+    <title>声桥 SoundBridge · 把此刻的声音递给远方的人</title>
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到主要内容</a>
+
+    <div class="atmosphere" aria-hidden="true">
+      <div class="aurora aurora-a"></div>
+      <div class="aurora aurora-b"></div>
+      <div class="grain"></div>
+    </div>
+
+    <svg class="svg-sprite" aria-hidden="true">
+      <symbol id="i-wave" viewBox="0 0 24 24">
+        <path d="M2 12h2.2l1.6-5 2.4 10 2.2-7 2.1 8 2.3-12 2.1 9 1.5-3H22" />
+      </symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24">
+        <path d="M5 12h13M13 6l6 6-6 6" />
+      </symbol>
+      <symbol id="i-up-right" viewBox="0 0 24 24">
+        <path d="M7 17 17 7M8 7h9v9" />
+      </symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24">
+        <rect x="8" y="8" width="11" height="11" rx="2.5" />
+        <path d="M16 8V6.5A2.5 2.5 0 0 0 13.5 4H6.5A2.5 2.5 0 0 0 4 6.5v7A2.5 2.5 0 0 0 6.5 16H8" />
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 24 24">
+        <path d="m5 12.5 4.5 4.5L19 7" />
+      </symbol>
+      <symbol id="i-mic" viewBox="0 0 24 24">
+        <rect x="9" y="3" width="6" height="11" rx="3" />
+        <path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3M9 21h6" />
+      </symbol>
+      <symbol id="i-mic-off" viewBox="0 0 24 24">
+        <path d="m4 4 16 16M9 9v2a3 3 0 0 0 4.7 2.5M15 10V6a3 3 0 0 0-5.7-1.3M5.5 11.5a6.5 6.5 0 0 0 10 5.6M12 18v3M9 21h6" />
+      </symbol>
+      <symbol id="i-monitor" viewBox="0 0 24 24">
+        <rect x="3" y="4" width="18" height="12.5" rx="2" />
+        <path d="M8 21h8M12 16.5V21" />
+      </symbol>
+      <symbol id="i-headphones" viewBox="0 0 24 24">
+        <path d="M4 14v-2a8 8 0 0 1 16 0v2" />
+        <rect x="3" y="13" width="4" height="7" rx="2" />
+        <rect x="17" y="13" width="4" height="7" rx="2" />
+      </symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24">
+        <path d="M12 3 5 6v5.5c0 4.6 2.9 7.9 7 9.5 4.1-1.6 7-4.9 7-9.5V6l-7-3Z" />
+        <path d="m9 12 2 2 4-4" />
+      </symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24">
+        <rect x="4.5" y="10" width="15" height="10.5" rx="2.5" />
+        <path d="M8 10V7.5a4 4 0 0 1 8 0V10" />
+      </symbol>
+      <symbol id="i-users" viewBox="0 0 24 24">
+        <circle cx="9" cy="8" r="3.2" />
+        <path d="M3.5 20c.5-3.4 2.6-5.4 5.5-5.4s5 2 5.5 5.4M15.5 5.2a3 3 0 0 1 0 5.7M17 14.8c2.2.4 3.5 2.1 3.8 4.7" />
+      </symbol>
+      <symbol id="i-volume" viewBox="0 0 24 24">
+        <path d="M4 9.5h3l4-3.5v12l-4-3.5H4zM15 8.5a5 5 0 0 1 0 7M17.8 6a8.5 8.5 0 0 1 0 12" />
+      </symbol>
+      <symbol id="i-volume-off" viewBox="0 0 24 24">
+        <path d="M4 9.5h3l4-3.5v12l-4-3.5H4zM15.5 9.5l5 5M20.5 9.5l-5 5" />
+      </symbol>
+      <symbol id="i-x" viewBox="0 0 24 24">
+        <path d="m6 6 12 12M18 6 6 18" />
+      </symbol>
+      <symbol id="i-help" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M9.7 9a2.4 2.4 0 1 1 3.5 2.1c-.8.5-1.2 1-1.2 2M12 17.2v.1" />
+      </symbol>
+      <symbol id="i-info" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 11v5.5M12 7.8v.1" />
+      </symbol>
+      <symbol id="i-spark" viewBox="0 0 24 24">
+        <path d="M12 3c.7 5.2 3.1 7.6 8 8-4.9.4-7.3 2.8-8 8-.7-5.2-3.1-7.6-8-8 4.9-.4 7.3-2.8 8-8Z" />
+      </symbol>
+      <symbol id="i-radio" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="2.2" />
+        <path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4M4.7 4.7a10.4 10.4 0 0 0 0 14.6M19.3 4.7a10.4 10.4 0 0 1 0 14.6" />
+      </symbol>
+      <symbol id="i-chevron" viewBox="0 0 24 24">
+        <path d="m9 5 7 7-7 7" />
+      </symbol>
+    </svg>
+
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="声桥 SoundBridge 首页">
+        <span class="brand-mark"><svg><use href="#i-wave"></use></svg></span>
+        <span class="brand-type">
+          <strong>声桥</strong>
+          <small>SOUNDBRIDGE</small>
+        </span>
+      </a>
+      <div class="header-right">
+        <span class="secure-state" id="secureState" hidden>
+          <svg><use href="#i-lock"></use></svg>
+          <span>安全连接</span>
+        </span>
+        <button class="header-help" id="helpBtn" type="button" aria-label="使用说明">
+          <svg><use href="#i-help"></use></svg>
+          <span>使用说明</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="landing-view view" id="landingView">
+        <div class="landing-grid">
+          <div class="hero-copy">
+            <p class="eyebrow"><span class="pulse-dot"></span> 实时 · 点对点 · 无需安装</p>
+            <h1>把此刻的声音，<br /><span class="accent-text">递给远方的人。</span></h1>
+            <p class="lede">
+              创建一条只属于你们的声音通道。双方都能把设备上正在播放的音乐、视频或游戏声，实时分享给对方。
+            </p>
+
+            <div class="hero-actions">
+              <button class="btn primary xl" id="createBtn" type="button">
+                <span class="btn-label">创建声音房间</span>
+                <svg><use href="#i-arrow"></use></svg>
+              </button>
+              <div class="join-block">
+                <span class="join-label">或者，加入已有房间</span>
+                <form class="join-form" id="joinForm" novalidate>
+                  <label class="sr-only" for="roomInput">六位房间码</label>
+                  <input
+                    id="roomInput"
+                    name="room"
+                    type="text"
+                    inputmode="text"
+                    autocomplete="off"
+                    autocapitalize="characters"
+                    spellcheck="false"
+                    maxlength="6"
+                    placeholder="输入 6 位房间码"
+                    aria-describedby="joinHint"
+                  />
+                  <button class="btn join-btn" type="submit" aria-label="加入房间">
+                    <span>加入</span>
+                    <svg><use href="#i-chevron"></use></svg>
+                  </button>
+                </form>
+                <span class="join-hint" id="joinHint">房间码由对方创建时生成</span>
+              </div>
+            </div>
+
+            <ul class="trust-list" aria-label="产品特点">
+              <li><svg><use href="#i-lock"></use></svg> 无需注册</li>
+              <li><svg><use href="#i-radio"></use></svg> P2P 优先</li>
+              <li><svg><use href="#i-shield"></use></svg> 连不上自动中继</li>
+            </ul>
+          </div>
+
+          <div class="sound-scene" aria-hidden="true">
+            <div class="scene-glow"></div>
+            <div class="orbit orbit-outer"></div>
+            <div class="orbit orbit-inner"></div>
+            <div class="orbit-tick tick-1"></div>
+            <div class="orbit-tick tick-2"></div>
+            <svg class="orbit-lines" viewBox="0 0 560 560">
+              <path class="line line-a" d="M150 172C245 215 315 345 410 388" />
+              <path class="line line-b" d="M118 352C236 332 324 228 442 208" />
+            </svg>
+
+            <div class="device-node node-a">
+              <span class="node-icon"><svg><use href="#i-monitor"></use></svg></span>
+              <span class="node-copy"><b>我的设备</b><small>系统声音</small></span>
+              <span class="node-live"><i></i>LIVE</span>
+            </div>
+            <div class="device-node node-b">
+              <span class="node-icon"><svg><use href="#i-headphones"></use></svg></span>
+              <span class="node-copy"><b>对方的设备</b><small>实时收听</small></span>
+              <span class="node-live"><i></i>LIVE</span>
+            </div>
+
+            <div class="core">
+              <div class="core-halo"></div>
+              <div class="core-disc">
+                <div class="core-bars">
+                  <i style="--h: 18%"></i><i style="--h: 44%"></i><i style="--h: 70%"></i><i style="--h: 100%"></i><i style="--h: 64%"></i><i style="--h: 36%"></i><i style="--h: 82%"></i><i style="--h: 52%"></i><i style="--h: 26%"></i>
+                </div>
+                <span>LIVE</span>
+              </div>
+            </div>
+
+            <div class="float-chip chip-a"><svg><use href="#i-wave"></use></svg> 48 kHz</div>
+            <div class="float-chip chip-b"><svg><use href="#i-spark"></use></svg> 低延迟</div>
+            <div class="float-chip chip-c"><svg><use href="#i-lock"></use></svg> P2P 加密</div>
+          </div>
+        </div>
+
+        <div class="how-strip">
+          <div class="how-intro">
+            <span class="section-index">HOW IT WORKS</span>
+            <p>三步，让两边的声音连起来。</p>
+          </div>
+          <ol class="how-steps">
+            <li>
+              <span class="step-number">01</span>
+              <div><b>创建房间</b><span>生成一个六位房间码</span></div>
+            </li>
+            <li>
+              <span class="step-number">02</span>
+              <div><b>邀请对方</b><span>把链接或房间码发过去</span></div>
+            </li>
+            <li>
+              <span class="step-number">03</span>
+              <div><b>共享声音</b><span>双方各自点一下共享</span></div>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="room-view view" id="roomView" hidden>
+        <div class="room-head">
+          <div class="room-identity">
+            <div class="room-kicker"><span class="pulse-dot"></span> 声音房间</div>
+            <button class="room-code" id="copyCodeBtn" type="button" title="复制房间码">
+              <span id="roomCode">------</span>
+              <svg><use href="#i-copy"></use></svg>
+            </button>
+          </div>
+          <div class="room-head-actions">
+            <span class="presence-pill offline" id="peerPresence"><i></i><span>对方未连接</span></span>
+            <span class="status-pill waiting" id="connPill" role="status" aria-live="polite"><i></i><span id="connText">等待对方加入</span></span>
+            <button class="btn subtle" id="copyInviteBtn" type="button">
+              <svg><use href="#i-copy"></use></svg>
+              复制邀请链接
+            </button>
+          </div>
+        </div>
+
+        <div class="invite-strip" id="inviteStrip">
+          <div class="invite-copy">
+            <span class="invite-icon"><svg><use href="#i-users"></use></svg></span>
+            <p><b>房间已就绪。</b> 把房间码 <strong id="inviteCode">------</strong> 或邀请链接发给对方。</p>
+          </div>
+          <div class="invite-actions">
+            <button class="text-btn" id="inviteCopyCode" type="button">复制房间码</button>
+            <button class="text-btn strong" id="inviteCopyLink" type="button">复制链接 <svg><use href="#i-up-right"></use></svg></button>
+          </div>
+        </div>
+        <p class="invite-hint" id="inviteHint" hidden></p>
+
+        <div class="room-grid">
+          <article class="voice-card self-card" id="selfCard">
+            <header class="card-head">
+              <div class="who">
+                <span class="who-dot self-dot"></span>
+                <span>我</span>
+                <em id="selfRole">房主</em>
+              </div>
+              <span class="mini-state" id="selfState"><i></i> 未共享</span>
+            </header>
+
+            <div class="voice-core">
+              <canvas class="rhythm-orbit" id="localCanvas" width="360" height="360" aria-hidden="true"></canvas>
+              <div class="pulse-rings"><span></span><span></span><span></span></div>
+              <div class="avatar self-avatar">
+                <svg><use href="#i-wave"></use></svg>
+              </div>
+              <span class="core-badge" id="selfBadge">待机</span>
+            </div>
+            <div class="rhythm-caption">
+              <span class="rhythm-level" id="localLevel">−∞ dB</span>
+              <span class="rhythm-word" id="localRhythm">静默</span>
+            </div>
+
+            <div class="card-actions">
+              <button class="btn primary wide" id="shareBtn" type="button">
+                <svg><use href="#i-monitor"></use></svg>
+                <span>共享我的设备声音</span>
+              </button>
+              <button class="mic-row" id="micBtn" type="button" aria-pressed="false">
+                <span class="switch" aria-hidden="true"><i></i></span>
+                <span class="mic-copy"><b>同时共享麦克风</b><small>说话声会与设备声音混合</small></span>
+                <svg class="mic-glyph"><use href="#i-mic"></use></svg>
+              </button>
+            </div>
+          </article>
+
+          <div class="link-column" aria-hidden="true">
+            <span class="link-caption" id="linkCaption">等待连接</span>
+            <div class="link-track">
+              <span class="link-dot"></span>
+              <div class="link-bars">
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              </div>
+              <span class="link-dot"></span>
+            </div>
+            <span class="link-protocol" id="linkProtocol">P2P · 端到端</span>
+            <span class="latency" id="latency" hidden></span>
+          </div>
+
+          <article class="voice-card remote-card" id="remoteCard">
+            <header class="card-head">
+              <div class="who">
+                <span class="who-dot remote-dot"></span>
+                <span>对方</span>
+                <em id="remoteRole">尚未加入</em>
+              </div>
+              <span class="mini-state" id="remoteState"><i></i> 等待加入</span>
+            </header>
+
+            <div class="voice-core">
+              <canvas class="rhythm-orbit" id="remoteCanvas" width="360" height="360" aria-hidden="true"></canvas>
+              <div class="pulse-rings"><span></span><span></span><span></span></div>
+              <div class="avatar remote-avatar">
+                <svg><use href="#i-headphones"></use></svg>
+              </div>
+              <span class="core-badge" id="remoteBadge">等待连接</span>
+            </div>
+            <div class="rhythm-caption">
+              <span class="rhythm-level" id="remoteLevel">−∞ dB</span>
+              <span class="rhythm-word" id="remoteRhythm">等待声音</span>
+            </div>
+
+            <div class="card-actions">
+              <button class="btn ghost wide" id="playRemoteBtn" type="button" hidden>
+                <svg><use href="#i-volume"></use></svg>
+                <span>点击播放对方声音</span>
+              </button>
+              <div class="volume-control">
+                <button class="icon-btn" id="muteBtn" type="button" aria-label="静音对方声音" aria-pressed="false">
+                  <svg><use href="#i-volume"></use></svg>
+                </button>
+                <label class="sr-only" for="volumeRange">对方声音音量</label>
+                <input id="volumeRange" type="range" min="0" max="100" value="80" step="1" />
+                <span class="volume-value" id="volumeValue">80%</span>
+              </div>
+              <p class="remote-empty" id="remoteEmpty">对方加入并共享后，声音会从这里流进来。</p>
+            </div>
+          </article>
+        </div>
+
+        <section class="activity-panel" aria-label="连接动态">
+          <header class="activity-head">
+            <div class="activity-title"><span class="activity-live"></span> 连接动态 <span class="activity-duration" id="sessionTime">00:00</span></div>
+            <span class="activity-hint">对方加入、断开或通道切换都会记录在这里</span>
+          </header>
+          <ol class="event-log" id="eventLog" aria-live="polite"></ol>
+        </section>
+
+        <div class="room-foot">
+          <p class="headphone-tip">
+            <svg><use href="#i-headphones"></use></svg>
+            <span>建议双方佩戴耳机。若用扬声器，对方的声音可能被再次采集，形成回声。</span>
+          </p>
+          <div class="room-foot-actions">
+            <button class="text-btn" id="reconnectBtn" type="button" hidden>重新连接</button>
+            <button class="btn danger" id="leaveBtn" type="button">
+              <svg><use href="#i-x"></use></svg>
+              离开房间
+            </button>
+          </div>
+        </div>
+
+        <div class="room-tip" id="roomTip" hidden>
+          <svg><use href="#i-info"></use></svg>
+          <span id="roomTipText"></span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span><b>声桥</b> · 声音只为你们流动</span>
+      <span class="footer-tech">WebRTC / WSS 中继 · 不保存音频</span>
+    </footer>
+
+    <audio id="remoteAudio" autoplay playsinline></audio>
+
+    <div class="connection-alert" id="connectionAlert" role="status" aria-live="assertive" hidden>
+      <span class="connection-alert-icon"><svg><use href="#i-check"></use></svg></span>
+      <div class="connection-alert-copy">
+        <b id="connectionAlertTitle">对方已连接</b>
+        <small id="connectionAlertDetail">声音通道准备中</small>
+      </div>
+      <button class="connection-alert-close" id="connectionAlertClose" type="button" aria-label="关闭提醒">
+        <svg><use href="#i-x"></use></svg>
+      </button>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true">
+      <span class="toast-icon"><svg><use href="#i-check"></use></svg></span>
+      <span id="toastText"></span>
+    </div>
+
+    <dialog class="help-dialog" id="helpDialog">
+      <div class="dialog-head">
+        <div>
+          <span class="room-kicker">QUICK GUIDE</span>
+          <h2>让对方听见你的设备声音</h2>
+        </div>
+        <button class="icon-btn" id="closeHelpBtn" type="button" aria-label="关闭使用说明">
+          <svg><use href="#i-x"></use></svg>
+        </button>
+      </div>
+      <div class="dialog-body">
+        <ol class="guide-list">
+          <li>
+            <span>1</span>
+            <div><b>用 Chrome 或 Edge 打开</b><p>电脑端用 Chrome / Edge；Android 共享方请安装下方的手机共享端 APK；手机浏览器适合收听。</p></div>
+          </li>
+          <li>
+            <span>2</span>
+            <div><b>点击“共享我的设备声音”</b><p>在弹窗里选择“整个屏幕”，并勾选“分享系统音频 / 分享音频”，然后确认共享。</p></div>
+          </li>
+          <li>
+            <span>3</span>
+            <div><b>双方各自点一次</b><p>这是一条双向通道：你共享，对方才能听见你；对方共享，你才能听见对方。</p></div>
+          </li>
+        </ol>
+        <div class="guide-note">
+          <svg><use href="#i-headphones"></use></svg>
+          <p><b>请尽量戴耳机。</b> 如果使用外放，对方的声音会被麦克风或系统声卡再次采集，产生明显回声。</p>
+        </div>
+        <div class="guide-note amber">
+          <svg><use href="#i-info"></use></svg>
+          <p><b>浏览器会显示“正在共享屏幕”。</b> 这是浏览器获取系统声音的必要条件；声桥不会上传或保存画面，视频轨道也不会发送给任何人。</p>
+        </div>
+        <div class="guide-note">
+          <svg><use href="#i-monitor"></use></svg>
+          <p><b>共享方在手机上？</b> Android 10 及以上可安装 <a href="/downloads/soundbridge-mobile.apk" download>声桥手机共享端 APK</a>，授权系统录制后即可采集小说、音乐等 App 的声音。App 内可选择监听某个应用、随时切换，并打开“同时采集麦克风”。iPhone 受系统限制只能收听。</p>
+        </div>
+        <details class="guide-details">
+          <summary>没有声音？按平台排查</summary>
+          <div>
+            <p><b>Windows：</b>共享时选择“整个屏幕”，并打开左下角的“分享系统音频”。如果仍然没有声音，检查系统音量合成器中浏览器是否被静音。</p>
+            <p><b>macOS：</b>Chrome 默认不能采集整个系统的声音。可安装 BlackHole 等虚拟声卡，或在共享时选择一个正在播放声音的标签页。Safari 仅支持标签页音频。</p>
+            <p><b>Linux：</b>需要在 PipeWire / PulseAudio 中把监听源（Monitor）作为输入，或共享带声音的标签页。</p>
+            <p><b>跨网络：</b>双方打开同一个 HTTPS 地址即可。直连失败会自动切换到服务器中继，无需手动配置 TURN。</p>
+            <p><b>Android 共享端：</b>如果共享方使用手机，请下载 <a href="/downloads/soundbridge-mobile.apk" download>声桥手机共享端 APK</a>。安装后填服务器地址 → 创建房间 → 开始共享 → 允许录屏，再打开小说软件播放。Android 10 及以上可用。</p>
+            <p><b>iPhone：</b>iOS 不允许第三方 App 采集其他 App 的声音，因此 iPhone 只能作为收听端，不能作为“小说软件共享方”。</p>
+          </div>
+        </details>
+      </div>
+      <div class="dialog-foot">
+        <span><svg><use href="#i-shield"></use></svg> P2P 优先 · 中继不保存音频</span>
+        <button class="btn primary" id="helpDoneBtn" type="button">知道了</button>
+      </div>
+    </dialog>
+
+    <noscript>
+      <div class="noscript">声桥需要启用 JavaScript 才能工作。</div>
+    </noscript>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
