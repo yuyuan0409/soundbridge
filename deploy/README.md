@@ -210,6 +210,8 @@ Cloudflare 没有官方 Android 版 cloudflared，也不能把 Node 服务做成
 
 完整步骤和限制见 **[android-termux.md](android-termux.md)**，开机脚本模板见 **termux-boot.sh.example**。
 
+如果不需要开机自启，推荐用 **[phone-host/README.md](phone-host/README.md)**：Termux + ngrok 免费固定域名，手动点一下启动，手机不需要电脑。
+
 > 如果目标是“手机可以关机、电脑也可以关机，网址仍然长期可用”，不要用这个方案；请选 Render / Fly / VPS。
 
 ## 方案 F：Cloudflare Workers（不需要任何设备常开）
